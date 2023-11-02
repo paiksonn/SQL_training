@@ -1,4 +1,5 @@
-here is some additional info + pic of table
+SELECT from WORLD Tutorial
+![WORLD_TABLE](https://github.com/paiksonn/SQL_training/assets/113239177/02c571da-4339-429d-b623-90eef523546c)
 
 
 1. Read the notes about this table. Observe the result of running this SQL command to show the name, continent and population of all countries.
