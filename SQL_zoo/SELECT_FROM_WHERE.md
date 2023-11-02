@@ -1,4 +1,5 @@
 SELECT from WORLD Tutorial
+
 ![WORLD_TABLE](https://github.com/paiksonn/SQL_training/assets/113239177/02c571da-4339-429d-b623-90eef523546c)
 
 
