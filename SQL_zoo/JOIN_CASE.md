@@ -34,53 +34,97 @@ SELECT player, teamid, stadium, mdate
 WHERE teamid = 'GER'
 ```
 
-4. dd
+4. Use the same JOIN as in the previous question.
+Show the team1, team2 and player for every goal scored by a player called Mario player LIKE 'Mario%'
 ```sql
-
+SELECT team1, team2, player
+  FROM game JOIN goal ON (game.id=goal.matchid)
+WHERE player LIKE 'Mario%'
 ```
 
-5. dd
+5. The table eteam gives details of every national team including the coach. You can JOIN goal to eteam using the phrase goal JOIN eteam on teamid=id
+Show player, teamid, coach, gtime for all goals scored in the first 10 minutes gtime<=10
 ```sql
-
+SELECT player, teamid, coach, gtime
+  FROM goal JOIN eteam ON (goal.teamid=eteam.id)
+ WHERE gtime<=10
 ```
 
-6. dd
-```sql
+6. To JOIN game with eteam you could use either
+game JOIN eteam ON (team1=eteam.id) or game JOIN eteam ON (team2=eteam.id)
 
+Notice that because id is a column name in both game and eteam you must specify eteam.id instead of just id
+
+List the dates of the matches and the name of the team in which 'Fernando Santos' was the team1 coach.
+```sql
+SELECT mdate, teamname
+  FROM game JOIN eteam ON (game.team1=eteam.id)
+ WHERE coach = 'Fernando Santos'
 ```
 
-7. dd
+7. List the player for every goal scored in a game where the stadium was 'National Stadium, Warsaw'
 ```sql
-
+SELECT player
+  FROM game JOIN goal ON (game.id=goal.matchid)
+ WHERE stadium = 'National Stadium, Warsaw'
 ```
 
-8. dd
-```sql
+8. The example query shows all goals scored in the Germany-Greece quarterfinal.
+Instead show the name of all players who scored a goal against Germany.
 
+HINT
+Select goals scored only by non-German players in matches where GER was the id of either team1 or team2.
+
+You can use teamid!='GER' to prevent listing German players.
+
+You can use DISTINCT to stop players being listed twice.
+```sql
+SELECT DISTINCT player
+  FROM game JOIN goal ON matchid = id 
+    WHERE (team1='GER' OR team2='GER') AND teamid!='GER'
 ```
 
-9. dd
+9. Show teamname and the total number of goals scored.
+COUNT and GROUP BY
+You should COUNT(*) in the SELECT line and GROUP BY teamname
 ```sql
-
+SELECT teamname, COUNT(*)
+  FROM eteam JOIN goal ON id=teamid
+ GROUP BY teamname
 ```
 
-10. dd
+10. Show the stadium and the number of goals scored in each stadium.
 ```sql
-
+SELECT stadium, COUNT(*) 
+FROM game JOIN goal ON (id = matchid)
+GROUP BY stadium
 ```
 
-11. dd
+11. For every match involving 'POL', show the matchid, date and the number of goals scored.
 ```sql
-
+SELECT matchid, mdate, COUNT(*)
+FROM game JOIN goal ON (id = matchid)
+WHERE (team1 = 'POL' OR team2 = 'POL')
+GROUP BY matchid, mdate
 ```
 
-12. dd
+12. For every match where 'GER' scored, show matchid, match date and the number of goals scored by 'GER'
 ```sql
-
+SELECT matchid, mdate, COUNT(*)
+FROM game JOIN goal ON (id = matchid)
+WHERE teamid = 'GER' GROUP BY matchid
 ```
 
-13. dd
+13. List every match with the goals scored by each team as shown. This will use "CASE WHEN" which has not been explained in any previous exercises.
+Notice in the query given every goal is listed. If it was a team1 goal then a 1 appears in score1, otherwise there is a 0. You could SUM this column to get a count of the goals scored by team1. Sort your result by mdate, matchid, team1 and team2.
 ```sql
-
+SELECT mdate, 
+	   team1, 
+	   SUM(CASE WHEN teamid = team1 THEN 1 ELSE 0 END) AS score1, 
+	   team2, 
+	   SUM(CASE WHEN teamid = team2 THEN 1 ELSE 0 END) AS score2 FROM
+	game LEFT JOIN goal ON (id = matchid)
+	GROUP BY id
+	ORDER BY mdate, matchid, team1, team2
 ```
 
